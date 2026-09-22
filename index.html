@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#142b56">
+  <meta name="description" content="ClassPilot：生理与生化的课堂、每周复习、考前总复习和每日校准。">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23142b56'/%3E%3Cpath d='M12 34h12l6-15 8 27 6-12h8' fill='none' stroke='%237ee0d0' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <title>ClassPilot · 学习驾驶舱</title>
+  <style>
+    :root{font-family:Inter,"PingFang SC","Microsoft YaHei",system-ui,sans-serif;color:#14233e;background:#edf2f8;font-size:16px;line-height:1.5}
+    *{box-sizing:border-box}body{margin:0}button,input,select,textarea{font:inherit}button{cursor:pointer}button:disabled{cursor:not-allowed;opacity:.45}a{color:inherit}
+    .app{max-width:1140px;margin:auto;min-height:100vh;padding-bottom:98px}.top{background:#142b56;color:#fff;padding:22px max(20px,calc((100vw - 1100px)/2));display:flex;align-items:center;justify-content:space-between;gap:16px}.brand{display:flex;align-items:center;gap:12px}.brandmark{width:38px;height:38px;border:2px solid #73e0d1;border-radius:12px;display:grid;place-items:center;color:#73e0d1;font-weight:800;font-size:22px}.brand b{font-size:1.2rem;letter-spacing:-.03em}.top small{display:block;color:#b7c9e7;font-size:.78rem}.top button{border:1px solid #6380ad;background:transparent;color:#fff;border-radius:12px;padding:9px 12px}
+    main{padding:24px 20px;max-width:1100px;margin:auto}.heading{display:flex;align-items:end;justify-content:space-between;gap:12px;margin-bottom:18px}.heading h1{font-size:clamp(1.6rem,4vw,2.2rem);line-height:1.2;letter-spacing:-.04em;margin:0}.heading p{color:#546784;margin:6px 0 0}.eyebrow{text-transform:uppercase;letter-spacing:.13em;font-size:.76rem;font-weight:800;color:#286c8d;margin:0 0 6px}.grid{display:grid;grid-template-columns:1.3fr .7fr;gap:18px}.card{background:#fff;border:1px solid #d8e2ef;border-radius:20px;padding:20px;box-shadow:0 9px 22px #142b5609}.card+.card{margin-top:0}.section-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}.section-title h2,.card h2{font-size:1.16rem;letter-spacing:-.02em;margin:0}.section-title small,.muted{color:#64758e}.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.between{justify-content:space-between}.stack{display:grid;gap:12px}.pill{display:inline-flex;align-items:center;border-radius:100px;padding:4px 10px;background:#e9f3fc;color:#215b87;font-size:.78rem;font-weight:700}.pill.warn{background:#fff2d8;color:#9c6200}.pill.bad{background:#ffeaeb;color:#af3c47}.pill.good{background:#dff8f2;color:#147a69}.pill.emph{background:#e8e8ff;color:#4f4ba5}.course-chip{border:1px solid #cbd9ea;background:#fff;border-radius:12px;padding:10px 14px;font-weight:700;color:#324766}.course-chip.active{background:#142b56;color:#fff;border-color:#142b56}.button{border:0;border-radius:12px;background:#1f5fab;color:#fff;padding:11px 15px;font-weight:750;min-height:44px}.button.secondary{background:#e8f2ff;color:#1f5fab}.button.ghost{background:#fff;border:1px solid #cbd9ea;color:#244064}.button.alert{background:#fff0e8;color:#9b4a23}.button.full{width:100%}.field{display:grid;gap:6px;color:#52637b;font-size:.86rem;font-weight:700}.field input,.field select,.field textarea{border:1px solid #cbd9e8;border-radius:11px;background:#fff;color:#152b4d;padding:10px 12px;min-height:43px;width:100%}.field textarea{min-height:80px;resize:vertical}.field input:focus,.field select:focus,.field textarea:focus,button:focus-visible{outline:3px solid #8ab8ff;outline-offset:2px}.scope{display:flex;gap:10px;align-items:end;flex-wrap:wrap;margin-bottom:16px}.scope .field{min-width:160px;flex:1}.divider{border:0;border-top:1px solid #e4ebf4;margin:18px 0}.lesson-title{font-size:1.45rem;line-height:1.25;margin:4px 0 10px}.number-list{padding-left:23px;margin:6px 0 0}.number-list li{padding:3px 0}.bullets{padding-left:20px;margin:7px 0}.bullets li{padding:3px 0}.tiny{font-size:.8rem;color:#65758d}.note{padding:11px 13px;border-radius:12px;background:#edf5fd;color:#385575;font-size:.87rem}.point{border:1px solid #dce5ef;border-radius:14px;padding:13px;margin-top:10px}.point b{display:block;margin-bottom:5px}.point .detail{font-size:.86rem;color:#5e6e83;margin-bottom:11px}.mark-row{display:flex;gap:7px;flex-wrap:wrap}.mark{background:#f2f5fa;border:1px solid #d4deea;color:#3b506e;border-radius:9px;padding:7px 10px;font-size:.84rem;min-height:36px}.mark.selected{background:#ddecff;border-color:#4888d0;color:#174c8c;font-weight:800}.mark.emphasis-selected{background:#e9e5ff;border-color:#7d73cb;color:#4a3f98}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.stat{padding:14px;border-radius:14px;background:#f3f7fc}.stat strong{display:block;font-size:1.5rem;line-height:1.2}.stat small{color:#64758e}.task{display:flex;gap:13px;align-items:flex-start;border:1px solid #dce5f0;border-radius:14px;padding:13px}.task-index{flex:none;background:#e2f0fb;border-radius:10px;padding:5px 9px;color:#1b5a90;font-weight:800;font-size:.83rem}.task h3{font-size:.97rem;margin:0 0 4px}.task p{font-size:.87rem;color:#61718a;margin:0}.task .time{font-weight:800;color:#1f5fab;white-space:nowrap;margin-left:auto}.check{width:22px;height:22px;accent-color:#1f5fab;flex:none;margin:2px 0 0}.progress{height:9px;border-radius:99px;background:#dce6f2;overflow:hidden}.progress span{display:block;height:100%;background:#2d8dbe;border-radius:inherit}.map{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.map-item{border:1px solid #dce5ef;border-radius:13px;padding:13px;background:#f9fbfe}.map-item b{display:block}.map-item small{color:#687b94}.callout{border-left:4px solid #51b9ad;background:#ebf9f7;padding:13px 15px;border-radius:0 12px 12px 0}.callout strong{display:block;margin-bottom:4px}.empty{padding:18px;text-align:center;background:#f5f8fc;border-radius:14px;color:#60738d}.nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #d8e2ed;z-index:20;display:flex;justify-content:center;padding:7px max(8px,env(safe-area-inset-right)) calc(7px + env(safe-area-inset-bottom))}.nav-inner{display:grid;grid-template-columns:repeat(4,1fr);width:min(740px,100%);gap:5px}.nav button{border:0;background:transparent;color:#718098;border-radius:11px;min-height:55px;font-size:.76rem;font-weight:800;display:grid;place-content:center;gap:2px}.nav button span{font-size:1.17rem;line-height:1}.nav button.active{background:#e9f2fd;color:#1d5ba6}.modal-backdrop{position:fixed;inset:0;background:#0c1b34aa;z-index:40;display:flex;align-items:center;justify-content:center;padding:18px}.modal{background:#fff;border-radius:22px;padding:22px;width:min(540px,100%);max-height:90vh;overflow:auto}.modal h2{margin:0 0 8px}.reason-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.reason{border:1px solid #cddbed;background:#f6f9fd;border-radius:12px;padding:13px;color:#234261;text-align:left;font-weight:700}.reason.active{background:#142b56;color:#fff}.timer{font-variant-numeric:tabular-nums;font-size:2.8rem;font-weight:850;letter-spacing:-.04em;color:#1f5fab}.hide{display:none!important}.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#142b56;color:#fff;padding:10px 15px;border-radius:11px;z-index:60;box-shadow:0 10px 30px #142b5640;width:max-content;max-width:90vw}.accent{color:#1f5fab}.spacer{height:6px}
+    @media(max-width:750px){main{padding:19px 14px}.top{padding:16px}.grid{grid-template-columns:1fr}.card{padding:17px;border-radius:17px}.map{grid-template-columns:1fr}.heading{align-items:start}.scope .field{min-width:130px}.brand small{display:none}}
+    .schedule-panel{margin-bottom:18px}.schedule-panel>p{margin:14px 0}.schedule-panel .scope{margin-top:12px}.course-tabs{display:flex;gap:8px;margin:4px 0 20px}.course-tabs .course-chip{min-width:88px}.card,.task-main,.grid>*,.stack>*{min-width:0}.card p,.task h3,.map-item b{overflow-wrap:anywhere}.card h3{font-size:1rem;margin:12px 0 7px}.card .lesson-title{font-size:1.55rem;margin:14px 0 22px}.task .task-main{flex:1}.task .task-main h3{margin:2px 0 6px}.task-check{padding:3px 0}.task-done{background:#f2faf8;border-color:#b6ded5}.task-done .task-main h3{color:#3b7165}.text-button{border:0;background:transparent;color:#205da2;font-weight:700;font-size:.875rem;text-align:left;padding:10px 0;min-height:44px}.weak-row{display:flex;align-items:center;justify-content:space-between;gap:10px;text-align:left;background:#f5f8fc;border:1px solid #dbe6f0;border-radius:12px;padding:12px;color:#253f61;min-height:48px}.weak-row>span:first-child{min-width:0}.pill{white-space:nowrap}.finish-note{margin-top:16px}.compact{margin:0}.progress{margin-top:12px}.check-line{display:flex;align-items:flex-start;gap:12px;min-height:44px}.chapter-link{text-align:left;border:1px solid #d8e4f0;background:#f7faff;color:#244364;border-radius:12px;padding:14px;display:grid;gap:7px}.chapter-link small{font-size:.875rem;color:#61738a}.outline-number{color:#417bac;margin-right:10px;font-variant-numeric:tabular-nums}.map-item .row{align-items:flex-start}.map-item b{flex:1;min-width:120px}.resume-bar{display:flex;justify-content:space-between;gap:12px;align-items:center;border:1px solid #afd1ee;background:#e0effc;border-radius:14px;padding:12px;margin-bottom:20px}.storage-warning{margin-bottom:16px;background:#fff0dc;color:#6f4a17}.settings-group{border-top:1px solid #dce5ef;margin-top:20px;padding-top:12px}.settings-group:last-of-type{margin-bottom:20px}.assessment-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.assessment-grid small{display:block;font-size:.8rem;font-weight:500;margin-top:5px}.reference{margin-top:16px;padding:13px;background:#f0f6fd;border-radius:12px}.reference p{white-space:pre-wrap}.fallback-steps{padding-left:22px}.fallback-steps li{margin-top:16px;padding-left:4px}.fallback-steps p{margin:6px 0}.modal{overscroll-behavior:contain}.modal h2{font-size:1.2rem;flex:1;min-width:0}.modal> .row:first-child{flex-wrap:nowrap;align-items:start}.modal-wide{width:min(700px,100%)}summary{cursor:pointer;font-weight:700;min-height:44px;align-content:center}textarea{line-height:1.65}.field,.tiny,.point .detail,.note,.mark,.nav button,.text-button,.task p{font-size:.875rem}.mark{min-height:44px}.scope{margin-top:8px}.top button{flex-shrink:0;font-size:.875rem}.top .brand{min-width:0}button{touch-action:manipulation}.nav button{font-weight:700}
+    @media(max-width:400px){.top{gap:8px;padding:14px}.brandmark{width:30px;height:30px;border-radius:9px}.brand{gap:7px}.brand b{font-size:1.05rem}.top button{padding:8px}.task{gap:9px;padding:12px}.task-index{padding:4px 7px}.modal-backdrop{padding:10px}.modal{padding:17px}.stat{padding:12px}.scope .button{width:100%}.resume-bar{flex-direction:column;align-items:stretch}.assessment-grid{grid-template-columns:1fr}.assessment-grid small{display:inline;margin-left:10px}}
+    @media(prefers-reduced-motion:no-preference){button{transition:background .15s,border-color .15s}button:hover{filter:brightness(.97)}}
+  </style>
+</head>
+<body>
+<noscript><p style="padding:20px">ClassPilot需要浏览器启用JavaScript，才能保存标记和生成任务。</p></noscript>
+<header class="top"><div class="brand"><div class="brandmark" aria-hidden="true">⌁</div><div><b>ClassPilot</b><small>生理 · 生化学习驾驶舱</small></div></div><button id="settingsBtn" type="button">设置与课程内容</button></header>
+<div class="app"><main id="view"></main></div>
+<nav class="nav" aria-label="主导航"><div class="nav-inner" id="nav"></div></nav>
+<div id="modalRoot"></div><div id="toast" class="toast hide" role="status"></div>
+<script>
+(() => {
+  'use strict';
+  const STARTER = {
+    physiology:{name:'生理',outline:[['细胞的基本功能','基础'],['血液','基础'],['血液循环','高频'],['呼吸','高频'],['消化与吸收','重点'],['能量代谢与体温','重点'],['尿的生成与排出','高频'],['感觉器官与神经系统','高频'],['内分泌','重点'],['生殖','了解']],chapters:[
+      {id:'phy-cardiac',title:'心脏泵血功能',tier:'高频',goals:['说出心动周期的主要阶段','用压力差解释瓣膜开闭','把心室容积变化与搏出量联系起来'],questions:['等容收缩期为什么所有瓣膜关闭？','舒张末期容积变化会怎样影响搏出量？','心输出量由哪些因素决定？'],mechanism:'压力差 → 瓣膜状态 → 血流方向 → 心室容积；先顺着这条链解释，再记阶段名称。',skip:'第一遍可暂缓记忆具体数值与少见异常曲线。',points:[{id:'cycle',title:'心动周期',detail:'各阶段压力、瓣膜与容积的对应关系',recall:'不看图，讲出等容收缩期的压力与瓣膜状态。'},{id:'starling',title:'Frank–Starling 机制',detail:'回心血量、舒张末期容积与搏出量',recall:'为什么回心血量增大时搏出量通常上升？'},{id:'output',title:'心输出量调节',detail:'心率与每搏输出量共同决定心输出量',recall:'心率升高一定使心输出量升高吗？'}],confusions:['前负荷与后负荷','搏出量与心输出量'],memorize:['心输出量＝心率×每搏输出量','四个瓣膜开闭由两侧压力差决定']},
+      {id:'phy-neuron',title:'神经细胞与动作电位',tier:'高频',goals:['区分静息电位与动作电位','解释去极化和复极化的离子基础','理解不应期的意义'],questions:['阈电位达到后为什么会快速去极化？','绝对不应期如何影响兴奋传播？'],mechanism:'膜电位变化 → 离子通道开放 → 离子流动 → 电位再变化。',skip:'首轮先不背所有通道亚型。',points:[{id:'rest',title:'静息电位',detail:'离子分布与钾漏通道',recall:'静息电位主要受哪种离子影响？'},{id:'action',title:'动作电位',detail:'钠、钾通道的时序',recall:'用通道开放顺序解释动作电位波形。'}],confusions:['阈电位与峰值电位','绝对不应期与相对不应期'],memorize:['动作电位具有全或无特征']},
+      {id:'phy-renal',title:'尿液生成与肾功能',tier:'重点',goals:['概括滤过、重吸收和分泌','解释肾小球滤过率的主要影响因素'],questions:['滤过率下降可能有哪些原因？','葡萄糖通常在哪里被重吸收？'],mechanism:'肾小球滤过 → 肾小管重吸收/分泌 → 排出量。',skip:'首轮可暂缓复杂清除率计算。',points:[{id:'filtration',title:'肾小球滤过',detail:'有效滤过压与滤过膜',recall:'有效滤过压由哪些压力共同决定？'},{id:'reabsorption',title:'肾小管重吸收',detail:'不同物质的重吸收部位',recall:'近端小管的主要重吸收任务是什么？'}],confusions:['滤过与分泌','肾血流量与肾小球滤过率'],memorize:['尿生成包含滤过、重吸收、分泌']}
+    ]},
+    biochemistry:{name:'生化',outline:[['蛋白质结构与功能','基础'],['酶与生物催化','高频'],['糖代谢','高频'],['脂质代谢','高频'],['生物氧化','高频'],['氨基酸代谢','重点'],['核苷酸代谢','重点'],['DNA复制与修复','重点'],['转录、翻译与基因表达调控','高频']],chapters:[
+      {id:'bio-glycolysis',title:'糖酵解与糖异生',tier:'高频',goals:['画出糖酵解主线','找出不可逆步骤及关键酶','解释糖异生如何绕过不可逆步骤'],questions:['糖酵解的三个不可逆步骤是什么？','糖异生为什么不能简单逆转糖酵解？','饥饿时肝脏为什么增强糖异生？'],mechanism:'反应路径 → 关键酶 → 能量收支 → 激素调节。先理解方向，再背酶名。',skip:'第一遍可暂缓少见中间产物的精确结构式。',points:[{id:'glycolysis',title:'糖酵解主线',detail:'从葡萄糖到丙酮酸的关键节点',recall:'不用看书，写出三个不可逆步骤的酶。'},{id:'gluconeogenesis',title:'糖异生绕行',detail:'绕过糖酵解不可逆反应',recall:'糖异生如何绕过丙酮酸激酶这一步？'},{id:'regulation',title:'代谢方向调节',detail:'能量状态和激素调节',recall:'胰高血糖素升高时两条路径如何变化？'}],confusions:['糖酵解与糖异生的方向调节','底物水平磷酸化与氧化磷酸化'],memorize:['糖酵解三个关键酶','糖异生对应的绕行酶']},
+      {id:'bio-tca',title:'三羧酸循环',tier:'高频',goals:['梳理循环输入与输出','识别关键限速环节','连接三羧酸循环与氧化磷酸化'],questions:['一分子乙酰辅酶A进入循环会产生什么？','为什么缺氧会间接影响三羧酸循环？'],mechanism:'乙酰辅酶A进入 → 脱羧与脱氢 → 还原当量进入呼吸链。',skip:'先不背每一个中间产物的结构式。',points:[{id:'tca-flow',title:'循环主线',detail:'输入、输出与碳流向',recall:'一轮循环的主要产物有哪些？'},{id:'tca-link',title:'与呼吸链的连接',detail:'NADH、FADH₂ 的去向',recall:'还原当量怎样用于ATP生成？'}],confusions:['底物水平磷酸化与氧化磷酸化','循环中间产物与净产物'],memorize:['一轮三羧酸循环的主要产物']},
+      {id:'bio-protein',title:'氨基酸代谢与尿素循环',tier:'重点',goals:['理解氨基酸脱氨基与转氨基','说明氨的去路','概括尿素循环'],questions:['氨为何需要及时转化？','转氨基作用与脱氨基作用有何区别？'],mechanism:'氨基酸分解 → 氨的转运 → 肝脏尿素合成 → 排泄。',skip:'首轮可暂缓所有氨基酸的个别代谢支路。',points:[{id:'transamination',title:'转氨基作用',detail:'氨基在分子之间转移',recall:'转氨基作用是否直接产生游离氨？'},{id:'urea',title:'尿素循环',detail:'氨的安全处理',recall:'尿素循环主要发生在哪里？'}],confusions:['转氨基与脱氨基','尿素循环与三羧酸循环'],memorize:['氨的主要去路与尿素循环功能']}
+    ]}
+  };
+  // Chapters 1–2 are a user-authorized estimate, not an inferred textbook table of contents.
+  for (const [course, data] of Object.entries(STARTER)) {
+    data.chapters.forEach(ch => ch.demoOnly = true);
+    const prefix = course === 'physiology' ? 'phy' : 'bio';
+    const focus = course === 'physiology' ? '概念、现象与因果关系' : '概念、结构与功能的联系';
+    data.chapters.unshift(...[1,2].map(no => ({
+      id:`${prefix}-chapter-${no}`, chapterNo:no, placeholder:true,
+      title:`第${no === 1 ? '一' : '二'}章 · 章节名称待教材确认`, tier:'当前学习范围',
+      goals:[`围绕第${no}章课堂内容，说出3个关键词`, `用自己的话解释一个${course === 'physiology' ? '生理概念或机制' : '生化概念或结构功能关系'}`, '记下今天仍不清楚的问题'],
+      questions:[`第${no}章主要在回答什么问题？`, '老师今天强调了什么？', '哪一个概念我还不能独立解释？'],
+      mechanism:`围绕今天课件中的${focus}整理框架；这里不预设本章具体讲哪些知识。`,
+      skip:'优先跟上今天讲解的主线。具体哪些细节能暂缓，等教材和课件确认后再标注。',
+      points:[{id:'framework',title:`第${no}章：框架回忆`,detail:`对照本章课件整理${focus}，补充今天实际讲到的部分。`,recall:'合上课件，写出本节3个关键词，并说明它们的联系。'},
+        {id:'question',title:`第${no}章：课堂疑点`,detail:'选择课堂随记里最不理解的一个问题，回到课件中核对。',recall:'选择今天最不清楚的一点，试着说明已经理解的部分和卡住的位置。'}],
+      confusions:['待根据本章教材、课件与课堂反馈整理'],memorize:['待老师实际要求确认，不自动生成必背考点']
+    })));
+  }
+  const STORE_KEY = 'classpilot-v1';
+  const COURSE_IDS = ['physiology', 'biochemistry'];
+  const LABELS = { good: '会了', fuzzy: '模糊', bad: '不会' };
+  const dateKey = (date = new Date()) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+  const today = () => dateKey();
+  const shiftedDay = offset => { const d = new Date(); d.setDate(d.getDate() + offset); return dateKey(d); };
+  const isRecord = value => value !== null && typeof value === 'object' && !Array.isArray(value);
+  const textList = value => Array.isArray(value) && value.length <= 200 && value.every(x => typeof x === 'string');
+  const safeId = value => typeof value === 'string' && /^[a-zA-Z0-9_-]{1,80}$/.test(value);
+  const dateValid = value => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value) && dateKey(new Date(value + 'T12:00:00')) === value;
+  const clone = value => JSON.parse(JSON.stringify(value));
+  function schoolWeek(day = dateKey()) {
+    const [y,m,d] = day.split('-').map(Number);
+    return Math.floor((Date.UTC(y,m-1,d) - Date.UTC(2026,8,7)) / (7*86400000)) + 1;
+  }
+  function scheduledClass(course, day = dateKey()) {
+    const week = schoolWeek(day), weekday = new Date(day+'T12:00:00').getDay();
+    if (course === 'physiology' && day === '2026-10-10') return {period:'上午',note:'课表注明的周六调课'};
+    if (course === 'physiology' && week >= 1 && ((weekday === 1 && week <= 15 && ![5,8].includes(week)) || (weekday === 3 && week <= 14 && week !== 5))) return {period:'上午',note:'生理课'};
+    if (course === 'biochemistry' && week >= 1 && ((weekday === 2 && week <= 16 && ![5,8].includes(week)) || (weekday === 4 && week <= 15 && week !== 4))) return {period:weekday === 2?'上午':'下午',note:'生化课'};
+    return null;
+  }
+  function todayCourse() { return COURSE_IDS.find(id => scheduledClass(id)) || 'physiology'; }
+  function validCourses(value) {
+    return isRecord(value) && COURSE_IDS.every(id => {
+      const course = value[id];
+      if (!isRecord(course) || typeof course.name !== 'string' || !Array.isArray(course.chapters) || !course.chapters.length || course.chapters.length > 100 || !course.chapters.some(ch=>isRecord(ch)&&!ch.demoOnly)) return false;
+      if (course.outline !== undefined && (!Array.isArray(course.outline) || !course.outline.every(row => Array.isArray(row) && row.length === 2 && row.every(s => typeof s === 'string')))) return false;
+      const chapterIds = new Set();
+      return course.chapters.every(ch => {
+        if (!isRecord(ch) || !safeId(ch.id) || chapterIds.has(ch.id)) return false;
+        chapterIds.add(ch.id);
+        if (!['title','tier','mechanism','skip'].every(k => typeof ch[k] === 'string') || !['goals','questions','confusions','memorize'].every(k => textList(ch[k]))) return false;
+        if (!Array.isArray(ch.points) || !ch.points.length || ch.points.length > 100) return false;
+        const pointIds = new Set();
+        return ch.points.every(p => {
+          if (!isRecord(p) || !safeId(p.id) || pointIds.has(p.id)) return false;
+          pointIds.add(p.id);
+          return ['title','detail','recall'].every(k => typeof p[k] === 'string') && (p.answer === undefined || typeof p.answer === 'string');
+        });
+      });
+    });
+  }
+  function newState() {
+    return {version:3, scheduleProfile:1, progress:{physiology:2,biochemistry:2}, progressEstimated:{physiology:true,biochemistry:true}, reviewDays:{physiology:6,biochemistry:0}, view:'today', course:todayCourse(), lesson:{physiology:'phy-chapter-2',biochemistry:'bio-chapter-2'}, courses:clone(STARTER), imported:false,
+      marks:{}, notes:{}, answers:{}, examDates:{physiology:'',biochemistry:''}, dailyPlans:{}, dailyDone:{}, budgets:{}, yesterdayOverrides:{}, weeklyChecks:{}, reviews:[], dropout:null};
+  }
+  function normalizeState(raw) {
+    if (!isRecord(raw) || !validCourses(raw.courses)) throw new Error('备份中的课程内容不完整');
+    const result = newState();
+    result.courses = Object.fromEntries(COURSE_IDS.map(id => [id, clone(raw.courses[id])]));
+    result.course = COURSE_IDS.includes(raw.course) ? raw.course : 'physiology';
+    result.view = ['today','class','weekly','exam'].includes(raw.view) ? raw.view : 'today';
+    result.imported = raw.imported === true;
+    const migrating = !raw.scheduleProfile;
+    if (migrating && !result.imported) result.courses = clone(STARTER);
+    if (migrating) { result.course=todayCourse(); result.view='today'; }
+    for (const id of COURSE_IDS) {
+      const available = result.courses[id].chapters.filter(ch=>!ch.demoOnly);
+      result.progress[id] = Number.isInteger(raw.progress?.[id]) ? Math.max(1,Math.min(available.length,raw.progress[id])) : Math.min(2,available.length);
+      result.progressEstimated[id] = raw.progressEstimated?.[id] !== false;
+      result.reviewDays[id] = Number.isInteger(raw.reviewDays?.[id]) && raw.reviewDays[id]>=0 && raw.reviewDays[id]<=6 ? raw.reviewDays[id] : result.reviewDays[id];
+      const selected = migrating ? available[result.progress[id]-1]?.id : raw.lesson?.[id];
+      result.lesson[id] = result.courses[id].chapters.some(ch => ch.id === selected) ? selected : result.courses[id].chapters[0].id;
+      result.examDates[id] = dateValid(raw.examDates?.[id]) ? raw.examDates[id] : '';
+    }
+    const recordField = (name, predicate) => {
+      if (raw[name] !== undefined && !isRecord(raw[name])) throw new Error('记录格式无效');
+      result[name] = Object.fromEntries(Object.entries(raw[name] || {}).filter(([key, value]) => key !== '__proto__' && key !== 'constructor' && predicate(value)));
+    };
+    recordField('marks', m => isRecord(m) && ['', 'good','fuzzy','bad'].includes(m.status || '') && Number.isFinite(m.updated) && (m.due === undefined || dateValid(m.due)));
+    recordField('notes', v => typeof v === 'string');
+    recordField('answers', v => typeof v === 'string');
+    recordField('dailyDone', v => isRecord(v) && Object.values(v).every(x => typeof x === 'boolean'));
+    recordField('weeklyChecks', v => isRecord(v) && Object.values(v).every(x => typeof x === 'boolean'));
+    recordField('budgets', v => Number.isFinite(v) && v >= 10 && v <= 120);
+    recordField('yesterdayOverrides', v => ['all','partial','none'].includes(v));
+    recordField('dailyPlans', p => isRecord(p) && typeof p.signature === 'string' && Array.isArray(p.tasks) && p.tasks.every(t => isRecord(t) && ['id','title','body','kind','reason'].every(k => typeof t[k] === 'string') && Number.isFinite(t.mins) && t.mins > 0 && t.mins <= 120));
+    result.reviews = Array.isArray(raw.reviews) ? raw.reviews.filter(r => isRecord(r) && typeof r.key === 'string' && Number.isFinite(r.at) && ['good','fuzzy','bad'].includes(r.status)) : [];
+    const d = raw.dropout;
+    if (isRecord(d) && COURSE_IDS.includes(d.course) && ['lost','bored','sleepy','slow','great','scroll'].includes(d.reason) && typeof d.lessonId === 'string' && Number.isFinite(d.remaining) && d.remaining >= 0 && d.remaining <= 900 && (d.endsAt === null || Number.isFinite(d.endsAt))) result.dropout = clone(d);
+    return result;
+  }
+  let storageMessage = '', canPersist = true, state;
+  try {
+    const saved = localStorage.getItem(STORE_KEY);
+    state = saved ? normalizeState(JSON.parse(saved)) : newState();
+  } catch (error) {
+    state = newState(); canPersist = false;
+    storageMessage = '旧记录无法读取或浏览器禁止本地保存。当前可继续试用，请导出记录备份；可在设置中恢复已有备份。';
+  }
+  function save() {
+    if (!canPersist) return;
+    try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); }
+    catch { canPersist = false; storageMessage = '本地保存失败，当前变化仅保留到页面关闭。请在设置中导出记录。'; showToast(storageMessage); }
+  }
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+  const c = () => state.courses[state.course];
+  const chapters = () => c().chapters;
+  const lesson = () => chapters().find(x => x.id === state.lesson[state.course]) || chapters()[0];
+  const markKey = (ch, p, course = state.course) => `${course}:${ch.id}:${p.id}`;
+  const allPoints = (course = state.course) => state.courses[course].chapters.flatMap(ch => ch.points.map(p => ({ch,p,key:markKey(ch,p,course),mark:state.marks[markKey(ch,p,course)]})));
+  const learningChapters = (course = state.course) => state.courses[course].chapters.filter(ch=>!ch.demoOnly);
+  const learnedChapters = (course = state.course) => learningChapters(course).slice(0,state.progress[course]);
+  const learnedPoints = (course = state.course) => { const ids=new Set(learnedChapters(course).map(ch=>ch.id)); return allPoints(course).filter(x=>ids.has(x.ch.id)); };
+  const progressLesson = () => learnedChapters().at(-1) || chapters()[0];
+  const reviewDay = () => schoolWeek() >= 1 && schoolWeek() <= 19 && new Date().getDay() === state.reviewDays[state.course];
+  const findPoint = key => COURSE_IDS.flatMap(id => allPoints(id)).find(x => x.key === key);
+  const counts = items => ({good:items.filter(x => x.mark?.status === 'good').length, fuzzy:items.filter(x => x.mark?.status === 'fuzzy').length, bad:items.filter(x => x.mark?.status === 'bad').length});
+  const dayDiff = value => { if (!dateValid(value)) return null; const d = new Date(); return Math.round((Date.UTC(...value.split('-').map((n,i) => i === 1 ? Number(n)-1 : Number(n))) - Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())) / 86400000); };
+  const weekStart = () => { const d = new Date(); d.setHours(0,0,0,0); d.setDate(d.getDate() - (d.getDay()+6)%7); return d.getTime(); };
+  const dailyKey = () => `${today()}:${state.course}`;
+  const weeklyKey = () => `${dateKey(new Date(weekStart()))}:${state.course}`;
+  const isWeak = x => ['bad','fuzzy'].includes(x.mark?.status);
+  const isDue = x => x.mark?.due && x.mark.due <= today();
+  const priority = x => (x.mark?.status === 'bad' ? 80 : x.mark?.status === 'fuzzy' ? 55 : !x.mark?.status ? 20 : 0) + (x.mark?.emphasis ? 25 : 0) + (isDue(x) ? 15 : 0);
+  const ordered = items => [...items].sort((a,b) => priority(b) - priority(a) || (a.mark?.updated || 0) - (b.mark?.updated || 0));
+  const navItems = [['today','⌂','今日'],['class','▤','课堂'],['weekly','◷','每周'],['exam','▦','考前']];
+  const courseTabs = () => `<div class="course-tabs" role="group" aria-label="选择课程">${COURSE_IDS.map(id => `<button class="course-chip ${state.course === id ? 'active' : ''}" aria-pressed="${state.course === id}" data-course="${id}">${esc(state.courses[id].name)}</button>`).join('')}</div>`;
+  const statHtml = n => `<div class="stats"><div class="stat"><strong>${n.good}</strong><small>会了</small></div><div class="stat"><strong>${n.fuzzy}</strong><small>模糊</small></div><div class="stat"><strong>${n.bad}</strong><small>不会</small></div></div>`;
+  const list = items => `<ul class="bullets">${items.map(s => `<li>${esc(s)}</li>`).join('')}</ul>`;
+  const contentBadge = () => `<span class="tiny">${state.imported ? '已导入的课程内容' : '示例内容 · 可替换'}</span>`;
+  function shell(title, desc, body) {
+    return `${storageMessage ? `<div class="note storage-warning" role="alert">${esc(storageMessage)}</div>` : ''}${state.dropout ? `<div class="resume-bar"><span>${state.dropout.finished ? '备用任务已到时，先重新接入课堂。' : '你有一个15分钟备用任务。'}</span><button class="button secondary" id="resumeDropout">${state.dropout.finished ? '回到课堂' : '继续任务'}</button></div>` : ''}<div class="heading"><div><p class="eyebrow">${esc(c().name)} / CLASSPILOT</p><h1>${title}</h1><p>${desc}</p></div></div>${courseTabs()}${body}`;
+  }
+  function schedulePanel() {
+    const week=schoolWeek(), session=scheduledClass(state.course), weekday=['周日','周一','周二','周三','周四','周五','周六'];
+    const classes=COURSE_IDS.filter(id=>scheduledClass(id));
+    return `<section class="card schedule-panel"><div class="section-title"><h2>${week>=1&&week<=19?`第${week}周`:'学期外'} · ${weekday[new Date().getDay()]}</h2><span class="tiny">${today()}</span></div><div class="row">${classes.length?classes.map(id=>`<button class="course-chip ${id===state.course?'active':''}" data-course="${id}">${esc(state.courses[id].name)} · ${scheduledClass(id).period}</button>`).join(''):'<span class="muted">今天没有生理或生化课。</span>'}</div><p>${session?`今天${session.period}有${esc(c().name)}课，围绕当前章节听课，课后短回忆。`:reviewDay()?`今天是暂定的${esc(c().name)}周复习日。`:`今天没有${esc(c().name)}课，只安排已学内容中到期或未解决的小任务。`}</p><div class="note">${state.progressEstimated[state.course]?'按你第三周的描述暂估：':'已设置：'}复习范围为第1–${state.progress[state.course]}章，当前按第${state.progress[state.course]}章跟课。${state.imported?'':'章节名称及知识点待教材确认。'} 这表示接触过的范围，不代表已经掌握。</div><details class="finish-note"><summary>调整进度和每周复习日</summary><div class="scope"><label class="field">${esc(c().name)}目前学到<select id="progressChapter">${learningChapters().map((ch,i)=>`<option value="${i+1}" ${i+1===state.progress[state.course]?'selected':''}>第${i+1}章${ch.placeholder?'（名称待确认）':' · '+esc(ch.title)}</option>`).join('')}</select></label><label class="field">每周复习日<select id="weeklyReviewDay">${weekday.map((name,i)=>`<option value="${i}" ${state.reviewDays[state.course]===i?'selected':''}>${name}</option>`).join('')}</select></label></div><p class="tiny">暂排周六复习生理、周日复习生化，每科不超过120分钟。以后进度按实际章节更新，不按周数自动判定已学。</p></details></section>`;
+  }
+  function yesterdaySummary() {
+    const previousKey = `${shiftedDay(-1)}:${state.course}`;
+    const previous = state.dailyPlans[previousKey]?.tasks || [];
+    const done = state.dailyDone[previousKey] || {};
+    const completed = previous.filter(t => done[t.id]).length;
+    const automatic = previous.length ? completed === previous.length ? 'all' : completed ? 'partial' : 'none' : 'unknown';
+    const override = state.yesterdayOverrides[dailyKey()];
+    return {status:override || automatic, text:override ? `手动补充：${{all:'全部完成',partial:'完成一部分',none:'没完成'}[override]}` : previous.length ? `自动读取昨天：完成 ${completed}/${previous.length} 项` : '昨天没有任务记录，先按当前薄弱点安排。', unfinished:previous.filter(t => !done[t.id])};
+  }
+  function dailyLimit() {
+    const days = dayDiff(state.examDates[state.course]);
+    return state.budgets[dailyKey()] || (days !== null && days >= 0 && days <= 30 ? 90 : reviewDay() ? 120 : 10);
+  }
+  function buildDailyPlan() {
+    const key = dailyKey(), yesterday = yesterdaySummary(), limit = dailyLimit(), points = learnedPoints(), current=progressLesson(), session=scheduledClass(state.course);
+    const signature = JSON.stringify([today(),current.id,state.progress[state.course],state.reviewDays[state.course],state.examDates[state.course],limit,yesterday.status,points.map(x => [x.key,x.p.title,x.p.recall,x.mark])]);
+    const old = state.dailyPlans[key];
+    if (old?.signature === signature) return old;
+    const done = state.dailyDone[key] || {};
+    const finished = (old?.tasks || []).filter(t => done[t.id] && (points.some(x=>x.key===t.id) || learnedChapters().some(ch=>t.id===`${state.course}:${ch.id}:framework`)));
+    const finishedIds = new Set(finished.map(t => t.id));
+    const carry = new Set(yesterday.status === 'all' ? [] : yesterday.unfinished.map(t => t.id));
+    const days = dayDiff(state.examDates[state.course]);
+    const examMode = days !== null && days >= 0 && days <= 30;
+    const candidates = ordered(points).filter(x => isDue(x) || x.mark?.status==='bad' || (isWeak(x) && !x.mark?.due) || carry.has(x.key) || ((session || reviewDay() || examMode) && (x.mark?.emphasis || (!x.mark?.status && (reviewDay() || examMode || x.ch.id===current.id)))));
+    candidates.sort((a,b) => (priority(b) + (carry.has(b.key)?30:0)) - (priority(a) + (carry.has(a.key)?30:0)));
+    let left = Math.max(0, limit - finished.reduce((sum,t) => sum+t.mins,0));
+    const tasks = [...finished];
+    for (const x of candidates) {
+      if (left < 5 || finishedIds.has(x.key)) continue;
+      const mins = Math.min(left, x.mark?.status === 'bad' ? 25 : x.mark?.status === 'fuzzy' ? 15 : 10);
+      const reason = carry.has(x.key) ? '承接昨天' : x.mark?.status === 'bad' ? '优先补漏' : x.mark?.emphasis ? '老师强调' : isDue(x) ? '到期再测' : '主动回忆';
+      tasks.push({id:x.key,title:x.p.title,body:x.p.recall,mins,kind:'point',reason}); left -= mins;
+    }
+    const frameworkId = `${state.course}:${current.id}:framework`;
+    if ((session || reviewDay() || examMode) && left >= 5 && !finishedIds.has(frameworkId)) tasks.push({id:frameworkId,title:`${current.title} · 框架回忆`,body:'闭卷讲出今天实际学习的主线，再核对课件。',mins:Math.min(15,left),kind:'framework',reason:session?'课后回忆':'恢复框架',chapterId:current.id});
+    const plan = {signature,tasks}; state.dailyPlans[key] = plan; save(); return plan;
+  }
+  function renderToday() {
+    const {tasks} = buildDailyPlan(), key = dailyKey(), done = state.dailyDone[key] || {}, completed = tasks.filter(t => done[t.id]).length;
+    const yesterday = yesterdaySummary(), days = dayDiff(state.examDates[state.course]), weak = ordered(learnedPoints().filter(isWeak));
+    const total = tasks.reduce((sum,t) => sum+t.mins,0), limit = dailyLimit();
+    return shell('今天先做什么', '跟着课表和已学进度，有需要才复习。', `${schedulePanel()}<div class="grid"><section class="card"><div class="section-title"><h2>今日任务</h2><span class="pill">${total} 分钟${total > limit ? ' · 含已完成' : ''}</span></div><div class="stack">${!tasks.length?'<div class="empty"><strong>今天这门课不用额外复习。</strong><p>没有到期或待解决的任务，等下次课或每周复习时再继续。</p></div>':''}${tasks.map((t,i) => `<article class="task ${done[t.id]?'task-done':''}"><label class="task-check"><input class="check" type="checkbox" aria-label="${esc(t.title)}：标记完成" data-daily="${esc(t.id)}" ${done[t.id]?'checked':''}></label><div class="task-main"><span class="tiny">${i+1 < 10?'0':''}${i+1} / ${esc(t.reason)}</span><h3>${esc(t.title)}</h3><p>${esc(t.body)}</p><button class="text-button" ${t.kind === 'point' ? `data-review="${esc(t.id)}" data-from-daily="true"` : `data-open-chapter="${esc(t.chapterId || lesson().id)}"`}>${done[t.id]?'再看一下':t.kind === 'point'?'开始回忆 →':'打开本节框架 →'}</button></div><span class="time">${t.mins}′</span></article>`).join('')}</div><hr class="divider"><div class="row between"><span>完成 ${completed}/${tasks.length} 项</span><span class="tiny">勾选完成 ≠ 已掌握</span></div><div class="progress" role="progressbar" aria-label="今日任务完成比例" aria-valuemin="0" aria-valuemax="${Math.max(1,tasks.length)}" aria-valuenow="${completed}"><span style="width:${tasks.length ? completed/tasks.length*100 : 0}%"></span></div>${tasks.length > 0 && completed === tasks.length ? '<div class="callout finish-note"><strong>今天可以结束了。</strong>仍不稳的知识点会进入之后的复习。</div>' : '<p class="tiny">先作答，再自评“会了 / 模糊 / 不会”，后续安排会跟着调整。</p>'}</section><aside class="stack"><section class="card"><div class="section-title"><h2>每日校准</h2><span class="tiny">${esc(today())}</span></div><div class="stack"><label class="field">${esc(c().name)}考试日期<input type="date" data-examdate="${state.course}" value="${esc(state.examDates[state.course])}"></label><div class="note">${days === null ? '设置日期后，考前30天会加强已学范围的复习。' : days < 0 ? '考试日期已过，请更新日期。' : days === 0 ? '今天考试。优先回忆要点，按实际时间缩短任务。' : `距离考试 ${days} 天${days <= 30 ? ' · 考前复习阶段' : ' · 日常巩固阶段'}`}</div><label class="field">今天这门课最多学多久<select id="dailyBudget">${[10,15,20,30,45,50,60,90,120].map(n => `<option value="${n}" ${n===limit?'selected':''}>${n} 分钟</option>`).join('')}</select></label><label class="field">昨天完成情况<select id="yesterdayOverride"><option value="auto" ${!state.yesterdayOverrides[key]?'selected':''}>自动读取记录</option>${[['all','全部完成'],['partial','完成一部分'],['none','没完成']].map(([value,label])=>`<option value="${value}" ${state.yesterdayOverrides[key]===value?'selected':''}>${label}</option>`).join('')}</select></label><p class="tiny compact">${esc(yesterday.text)} 未完成的任务会优先承接，时长不叠加到今天。</p></div></section><section class="card"><div class="section-title"><h2>薄弱点</h2><span class="pill">${weak.length} 个</span></div>${weak.length ? `<div class="stack">${weak.slice(0,4).map(x=>`<button class="weak-row" data-review="${esc(x.key)}"><span>${esc(x.p.title)}</span><span class="pill ${x.mark.status==='bad'?'bad':'warn'}">${LABELS[x.mark.status]}</span></button>`).join('')}</div>` : '<div class="empty">还没有薄弱点。到课堂标记，或做一次主动回忆。</div>'}</section></aside></div>`);
+  }
+  function markButtons(x) {
+    const m = x.mark || {};
+    return `<div class="mark-row">${Object.entries(LABELS).map(([value,label]) => `<button class="mark ${m.status===value?'selected':''}" aria-pressed="${m.status===value}" data-mark="${esc(x.key)}" data-status="${value}">${label}</button>`).join('')}<button class="mark ${m.emphasis?'emphasis-selected':''}" aria-pressed="${Boolean(m.emphasis)}" data-emphasis="${esc(x.key)}">老师强调</button></div>`;
+  }
+  function renderClass() {
+    const ch = lesson(), items = allPoints().filter(x=>x.ch.id===ch.id), noteKey = `${state.course}:${ch.id}`;
+    return shell('课堂', '这节课抓住主线，遇到卡点随手标记。', `<div class="scope"><label class="field">当前章节<select id="lessonSelect">${chapters().map(x=>`<option value="${esc(x.id)}" ${x.id===ch.id?'selected':''}>${esc(x.title)}${x.demoOnly?'（演示，不计入进度）':''}</option>`).join('')}</select></label><button class="button alert" id="dropoutBtn">课堂掉线 · 15分钟任务</button></div><div class="grid"><section class="card"><div class="row between"><span class="pill">${esc(ch.tier)}</span>${contentBadge()}</div><h2 class="lesson-title">${esc(ch.title)}</h2><h3>本节目标</h3>${list(ch.goals)}<hr class="divider"><h3>核心问题</h3><ol class="number-list">${ch.questions.map(s=>`<li>${esc(s)}</li>`).join('')}</ol><hr class="divider"><h3>重点机制</h3><div class="callout">${esc(ch.mechanism)}</div><hr class="divider"><details><summary>首轮可暂缓的细节</summary><p class="muted">${esc(ch.skip)}</p></details></section><aside class="card"><div class="section-title"><h2>随手标记</h2><span class="tiny">自动进入复习</span></div>${items.map(x=>`<div class="point"><b>${esc(x.p.title)}</b><p class="detail">${esc(x.p.detail)}</p>${markButtons(x)}<button class="text-button" data-review="${esc(x.key)}">试着回答一道题 →</button></div>`).join('')}<hr class="divider"><label class="field">课堂随记<textarea data-note="${esc(noteKey)}" placeholder="老师的例子、自己的疑问…">${esc(state.notes[noteKey] || '')}</textarea></label><p class="tiny">在当前浏览器自动保存。</p></aside></div>`);
+  }
+  function weeklyPool() {
+    const points=learnedPoints(), current=points.filter(x=>x.mark?.updated>=weekStart());
+    const pool=ordered(points.filter(x=>x.mark?.updated>=weekStart() || isWeak(x) || isDue(x)));
+    return {current,pool:pool.length?pool:points.filter(x=>x.ch.id===progressLesson().id),carried:points.filter(x=>isWeak(x) && x.mark.updated<weekStart()).length};
+  }
+  function allocateWeekly(pool) {
+    const tasks=[{id:'framework',title:'恢复本周框架',mins:10,body:'合上资料，写出学过的章节与它们的联系。'}];
+    let left=90;
+    for (const x of ordered(pool).filter(x=>isWeak(x)||x.mark?.emphasis||isDue(x))) {
+      const mins=x.mark?.status==='bad'?25:x.mark?.status==='fuzzy'?15:10;
+      if (left<10) break;
+      const allotted=Math.min(mins,left); left-=allotted;
+      tasks.push({id:x.key,title:x.p.title,mins:allotted,body:`${x.ch.title} · ${isWeak(x)?'先补理解，再闭卷解释':'核对老师强调内容与易错处'}`,pointKey:x.key});
+    }
+    tasks.push({id:'recall',title:'主动回忆检测',mins:15,body:'选下方题目，先独立回答，再对照材料自评。'});
+    tasks.push({id:'finish',title:'补漏与结束判断',mins:5,body:'标记仍不稳的点，完成下方结束检查。'});
+    return tasks;
+  }
+  function renderWeekly() {
+    const {current,pool,carried}=weeklyPool(), tasks=allocateWeekly(pool), checks=state.weeklyChecks[weeklyKey()]||{};
+    const leftOut=pool.filter(isWeak).filter(x=>!tasks.some(t=>t.pointKey===x.key)).length;
+    const conditions=['能闭卷说出本周框架。','本轮重点已经自测，答错处已经补漏。','剩余薄弱点已保留标记，交给后续任务。'];
+    const finished=conditions.every((_,i)=>checks[i]);
+    return shell('每周复习', '每科最多约120分钟，优先解决卡住你的地方。', `<div class="grid"><section class="card"><div class="section-title"><h2>本周状态</h2><span class="tiny">${dateKey(new Date(weekStart()))} 起</span></div>${statHtml(counts(current))}<p class="tiny">按本周标记统计。${carried?`另承接之前 ${carried} 个薄弱点。`:''}${!current.length?'尚无本周记录，可先用当前章节自测。':''}</p><hr class="divider"><div class="section-title"><h2>本周安排</h2><span class="pill">${tasks.reduce((sum,t)=>sum+t.mins,0)} / 120 分钟</span></div><div class="stack">${tasks.map((t,i)=>`<article class="task"><span class="task-index">${i+1}</span><div class="task-main"><h3>${esc(t.title)}</h3><p>${esc(t.body)}</p>${t.pointKey?`<button class="text-button" data-review="${esc(t.pointKey)}">开始自测 →</button>`:''}</div><span class="time">${t.mins}′</span></article>`).join('')}</div>${leftOut?`<p class="note">还有 ${leftOut} 个薄弱点未放进本轮，已保留在每日校准中。</p>`:''}<p class="tiny">提前完成就可以结束，不必凑满120分钟。</p></section><aside class="stack"><section class="card"><div class="section-title"><h2>主动回忆</h2><span class="tiny">自评反馈</span></div><div class="stack">${pool.slice(0,6).map(x=>`<div class="point"><b>${esc(x.p.title)}</b><p>${esc(x.p.recall)}</p><button class="button secondary full" data-review="${esc(x.key)}">作答并更新掌握情况</button></div>`).join('')}</div></section><section class="card"><h2>什么时候可以结束？</h2><div class="stack finish-note">${conditions.map((text,i)=>`<label class="check-line"><input type="checkbox" class="check" data-week-check="${i}" ${checks[i]?'checked':''}><span>${text}</span></label>`).join('')}</div>${finished?'<div class="callout finish-note"><strong>这周可以结束了。</strong>你保留的薄弱点会继续出现在后续任务里。</div>':''}</section></aside></div>`);
+  }
+  function renderExam() {
+    const outline=c().outline||chapters().map(ch=>[ch.title,ch.tier]), days=dayDiff(state.examDates[state.course]);
+    const emphasis=ordered(allPoints().filter(x=>x.mark?.emphasis));
+    return shell('考前总复习', '先看整门课，再从薄弱点和重点章节展开。', `<div class="grid"><section class="card"><div class="section-title"><h2>全课程大纲</h2><span class="pill">${outline.length} 个模块</span></div><p class="tiny">${state.imported?'使用你导入的大纲和重点分层。':'通用示例大纲；“高频”等分层也只是示例，请按老师要求调整。'}</p><div class="map">${outline.map(([title,tier],i)=>`<div class="map-item"><div class="row between"><b><span class="outline-number">${String(i+1).padStart(2,'0')}</span>${esc(title)}</b><span class="pill ${tier==='高频'?'warn':''}">${esc(tier)}</span></div></div>`).join('')}</div><hr class="divider"><div class="section-title"><h2>展开章节框架</h2>${contentBadge()}</div><div class="stack">${chapters().map(ch=>`<button class="chapter-link" data-open-chapter="${esc(ch.id)}"><b>${esc(ch.title)} →</b><small>${esc(ch.points.map(p=>p.title).join(' · '))}</small></button>`).join('')}</div><p class="note">${days===null?'先在今日页面设置考试日期。':days<0?'考试日期已过，请更新日期。':days===0?'今天考试，请按剩余时间压缩回忆任务。':`距离考试 ${days} 天。`} <button class="text-button" data-view="today">查看今日安排 →</button></p></section><aside class="stack"><section class="card"><h2>当前自评</h2><div class="finish-note">${statHtml(counts(learnedPoints()))}</div><p class="tiny">“会了”是你的自评；完成任务不会自动变成掌握。</p></section>${emphasis.length?`<section class="card"><h2>老师强调</h2>${list(emphasis.map(x=>x.p.title))}</section>`:''}<section class="card"><h2>易混点</h2>${list(chapters().flatMap(ch=>ch.confusions))}</section><section class="card"><h2>必背清单</h2>${list(chapters().flatMap(ch=>ch.memorize))}</section></aside></div>`);
+  }
+  function render() {
+    document.getElementById('nav').innerHTML=navItems.map(([id,icon,label])=>`<button data-view="${id}" class="${state.view===id?'active':''}" ${state.view===id?'aria-current="page"':''}><span aria-hidden="true">${icon}</span>${label}</button>`).join('');
+    document.getElementById('view').innerHTML=({today:renderToday,class:renderClass,weekly:renderWeekly,exam:renderExam}[state.view] || renderToday)();
+  }
+  function showToast(message) {
+    const node=document.getElementById('toast'); node.textContent=message; node.classList.remove('hide');
+    clearTimeout(showToast.timeout); showToast.timeout=setTimeout(()=>node.classList.add('hide'),4500);
+  }
+  let modalOrigin=null, reviewContext=null;
+  function showModal(title,body,wide=false) {
+    if (!document.querySelector('.modal')) modalOrigin=document.activeElement;
+    document.getElementById('modalRoot').innerHTML=`<div class="modal-backdrop"><section class="modal ${wide?'modal-wide':''}" role="dialog" aria-modal="true" aria-labelledby="modalTitle" tabindex="-1"><div class="row between"><h2 id="modalTitle">${esc(title)}</h2><button class="button ghost" data-close>关闭</button></div>${body}</section></div>`;
+    document.querySelectorAll('header.top,.app,nav.nav').forEach(el=>el.inert=true);
+    document.querySelector('.modal').focus();
+  }
+  function closeModal() {
+    document.getElementById('modalRoot').innerHTML=''; reviewContext=null;
+    document.querySelectorAll('header.top,.app,nav.nav').forEach(el=>el.inert=false);
+    if (modalOrigin?.isConnected) modalOrigin.focus(); else document.getElementById('settingsBtn').focus();
+  }
+  function openReview(key,fromDaily=false) {
+    const x=findPoint(key); if (!x) return;
+    reviewContext={key,fromDaily,dayKey:dailyKey()};
+    showModal('主动回忆 · '+x.p.title, `<p class="muted">先独立回答，再对照本节材料自评。未导入教材的章节，请使用你自己的课件核对。</p><div class="callout"><strong>${esc(x.ch.title)}</strong>${esc(x.p.recall)}</div><label class="field finish-note">我的回答<textarea id="reviewAnswer" data-answer="${esc(key)}" placeholder="可以写关键词，也可以先口述…">${esc(state.answers[key]||'')}</textarea></label><details class="reference"><summary>展开对照材料</summary>${x.p.answer?`<p>${esc(x.p.answer)}</p>`:`<p>${esc(x.p.detail)}</p><p>${esc(x.ch.mechanism)}</p>${list(x.ch.memorize)}<p class="tiny">这是本节参考框架，完整答案请核对教材或课件。</p>`}</details><p class="tiny">按刚才的回忆表现选择。这里使用自评，不会自动判题。</p><div class="assessment-grid">${Object.entries(LABELS).map(([value,label])=>`<button class="button ${value==='good'?'':value==='fuzzy'?'secondary':'ghost'}" data-assess="${value}">${label}<small>${value==='good'?'3天后再测':value==='fuzzy'?'明天再练':'继续补理解'}</small></button>`).join('')}</div>`);
+  }
+  function assess(value) {
+    if (!reviewContext || !LABELS[value]) return;
+    const {key,fromDaily,dayKey}=reviewContext, old=state.marks[key]||{};
+    state.marks[key]={...old,status:value,updated:Date.now(),reviewedAt:Date.now(),due:shiftedDay(value==='good'?3:value==='fuzzy'?1:0)};
+    state.reviews.push({key,status:value,at:Date.now(),answer:state.answers[key]||''});
+    if (fromDaily) { state.dailyDone[dayKey]??={}; state.dailyDone[dayKey][key]=true; }
+    save(); closeModal(); render(); showToast(value==='good'?'已记为会了，3天后安排再测。':value==='fuzzy'?'已记为模糊，明天优先练习。':'已保留薄弱点，接下来先补理解。');
+  }
+  const reasonNames={lost:'听不懂',bored:'不想听',sleepy:'太困',slow:'老师讲太慢',great:'状态很好',scroll:'想摸鱼'};
+  const fallback={
+    physiology:{lost:['找出本节卡住的一个机制。','按“原因 → 变化 → 结果”写出三行，缺哪步就标问号。','回到当前板书，找老师现在讲到的环节。'],bored:['从本节核心问题中选一个最想弄懂的。','闭卷画机制主线，再用本节框架补齐。','记一个疑问，接回老师当前的话题。'],sleepy:['方便时坐直、喝水或短暂活动。','只听并写下当前讲解的三个关键词。','用一句话概括，重新接入课堂。'],slow:['先尝试回答本节一个核心问题。','补一个“为什么”，核对框架，标出没把握的环节。','老师讲到新内容时接回课堂。'],great:['不看资料，挑一个本节核心问题。','完整解释机制，再指出其中一个容易混淆的概念。','带着你的答案重新听课堂。'],scroll:['先写下老师正在讲的主题。','完成一个最小任务：画出一条因果链，写一个疑问。','放下备用任务，重新听当前内容。']},
+    biochemistry:{lost:['锁定当前正在讲的一个概念或结构。','写出它的定义、结构或功能，再记下你不懂的一点。','找到老师当前讲到哪一步并接回。'],bored:['选择当前内容里一个有疑问的概念。','画出概念之间的联系，对照课件补齐。','带着这个问题重新听讲。'],sleepy:['方便时坐直、喝水或短暂活动。','从当前讲解中找出三个关键词。','用一句话复述，重新接入课堂。'],slow:['先看本节下一个概念，猜测它与前面内容的联系。','写出理由，与本节框架核对。','出现新信息时立即接回课堂。'],great:['选两个本节容易混淆的概念。','从定义、结构和功能三个角度作比较。','带着比较结果重新听讲。'],scroll:['先写出老师当前讲到的主题。','写一个关键词，再补上它的含义或作用。','记录一个疑问后重新听课。']}
+  };
+  let timer=null;
+  const formatTime=s=>`${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
+  function openDropout() {
+    if (state.dropout) { renderDropoutTask(); return; }
+    showModal('课堂掉线了？',`<p class="muted">选一个原因，做完15分钟先重新接入课堂。</p><div class="reason-grid">${Object.entries(reasonNames).map(([key,label])=>`<button class="reason" data-reason="${key}">${label}</button>`).join('')}</div>`);
+  }
+  function renderDropoutTask() {
+    const d=state.dropout; if (!d) return;
+    const course=state.courses[d.course], ch=course.chapters.find(x=>x.id===d.lessonId)||course.chapters[0];
+    const steps=fallback[d.course][d.reason];
+    showModal(`${course.name} · 15分钟备用任务`,`<p class="muted">${esc(ch.title)} · ${reasonNames[d.reason]}</p><ol class="fallback-steps">${steps.map((s,i)=>`<li><span class="pill">${['0–2 分钟','2–12 分钟','12–15 分钟'][i]}</span><p>${esc(s)}</p></li>`).join('')}</ol><div id="timer" class="timer">${formatTime(d.remaining)}</div><div id="reconnectNotice" class="callout ${d.finished?'':'hide'}" role="status"><strong>15分钟到了，先重新接入课堂。</strong>看当前板书，找到老师现在讲到的位置。</div><div class="row finish-note"><button class="button secondary" id="timerToggle" ${d.finished?'disabled':''}>${d.endsAt?'暂停计时':d.remaining===900?'开始计时':'继续计时'}</button><button class="button" id="finishFallback">重新接入课堂</button></div><p class="tiny">可以提前返回；收起窗口后，计时仍会继续。</p>`);
+    syncTimer();
+  }
+  function syncTimer() {
+    const d=state.dropout; if (!d) return;
+    if (d.endsAt !== null) {
+      d.remaining=Math.max(0,Math.ceil((d.endsAt-Date.now())/1000));
+      if (!d.remaining) {
+        d.endsAt=null; d.finished=true; clearInterval(timer); timer=null; save(); render();
+        showToast('15分钟到了，先重新接入课堂。');
+      }
+    }
+    const clock=document.getElementById('timer'); if (clock) clock.textContent=formatTime(d.remaining);
+    const notice=document.getElementById('reconnectNotice'); if (notice) notice.classList.toggle('hide',!d.finished);
+    const toggle=document.getElementById('timerToggle'); if (toggle) {toggle.disabled=Boolean(d.finished);toggle.textContent=d.finished?'计时结束':d.endsAt?'暂停计时':d.remaining===900?'开始计时':'继续计时';}
+  }
+  function toggleTimer() {
+    const d=state.dropout; if (!d || d.finished) return;
+    if (d.endsAt !== null) {syncTimer();d.endsAt=null;clearInterval(timer);timer=null;}
+    else {d.endsAt=Date.now()+d.remaining*1000;timer=setInterval(syncTimer,500);}
+    save();syncTimer();
+  }
+  function returnToClass() {
+    const d=state.dropout;
+    if (d) {state.course=d.course;state.lesson[d.course]=d.lessonId;}
+    state.dropout=null;clearInterval(timer);timer=null;state.view='class';save();closeModal();render();window.scrollTo(0,0);showToast('先看当前板书，接回老师正在讲的内容。');
+  }
+  function settings() {
+    showModal('设置与课程内容', `<p class="muted">${state.imported?'当前使用已导入内容。':'当前按第三周、第1–2章暂估进度；另保留3章演示内容。'} 学习记录保存在当前浏览器。</p><div class="settings-group"><h3>替换课程内容</h3><p class="tiny">先下载模板，填入整理后的教材/课件内容，再导入。可给知识点填写 answer 作为自测参考答案；原始PDF/PPT暂不自动解析。</p><button class="button secondary full" id="downloadTemplate">下载课程内容模板</button><label class="field finish-note">导入课程内容（JSON）<input id="courseImport" type="file" accept=".json,application/json"></label><p class="tiny">导入前会展示课程名与章节数。保留相同知识点ID，就能沿用原标记。</p></div><div class="settings-group"><h3>学习记录备份</h3><button class="button ghost full" id="exportData">导出完整备份</button><label class="field finish-note">恢复完整备份（JSON）<input id="backupImport" type="file" accept=".json,application/json"></label><p class="tiny">备份包含课程、随记、回答和进度。恢复将覆盖当前记录。</p></div><button class="button alert full" id="resetData">清空记录并恢复示例</button>`);
+  }
+  function download(name,data) {
+    const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json;charset=utf-8'}), url=URL.createObjectURL(blob), a=document.createElement('a');
+    a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+  }
+  let pendingImport=null;
+  async function prepareImport(file,backup) {
+    try {
+      if (file.size>3*1024*1024) throw new Error('文件超过3MB，请先精简内容');
+      const raw=JSON.parse(await file.text());
+      if (backup) {
+        if (![1,2,3].includes(raw.version)) throw new Error('请选择ClassPilot导出的完整备份');
+        pendingImport={backup:true,data:normalizeState(raw)};
+      } else {
+        if (raw.version || raw.format==='classpilot-backup') throw new Error('这是学习记录备份，请使用“恢复完整备份”');
+        const data=raw.courses||raw;
+        if (!validCourses(data)) throw new Error('课程格式不符，请使用模板并确保章节和知识点ID不重复');
+        pendingImport={backup:false,data:Object.fromEntries(COURSE_IDS.map(id=>[id,clone(data[id])]))};
+      }
+      const data=backup?pendingImport.data.courses:pendingImport.data;
+      showModal(backup?'确认恢复备份':'确认替换课程',`<p>${backup?'恢复后会覆盖当前课程、标记和随记。':'以下内容将替换当前课程，已有标记和随记会保留。'}</p>${list(COURSE_IDS.map(id=>`${data[id].name}：${data[id].chapters.length} 章，${data[id].chapters.reduce((n,ch)=>n+ch.points.length,0)} 个知识点`))}<div class="stack"><button class="button ghost" id="exportData">先备份当前记录</button><button class="button" id="confirmImport">${backup?'恢复这份备份':'导入这些课程'}</button><button class="button secondary" id="backToSettings">取消，返回设置</button></div>`);
+    } catch(error) {pendingImport=null;showToast(`导入失败：${error instanceof SyntaxError?'文件不是有效的JSON':error.message}`);}
+  }
+  function confirmImport() {
+    if (!pendingImport) return;
+    clearInterval(timer);timer=null;
+    if (pendingImport.backup) {state=pendingImport.data;canPersist=true;storageMessage='';}
+    else {state.courses=pendingImport.data;state.imported=true;COURSE_IDS.forEach(id=>{state.progress[id]=Math.min(state.progress[id],learningChapters(id).length);state.lesson[id]=learnedChapters(id).at(-1)?.id||state.courses[id].chapters[0].id;});state.dropout=null;}
+    pendingImport=null;save();closeModal();render();resumeTimer();showToast('已导入，学习安排已更新。');
+  }
+  function resumeTimer() {if(state.dropout?.endsAt){syncTimer();if(state.dropout?.endsAt)timer=setInterval(syncTimer,500);}}
+  document.addEventListener('click', event => {
+    const b=event.target.closest('button'); if (!b) return;
+    const d=b.dataset;
+    if (d.view) {state.view=d.view;save();render();window.scrollTo(0,0);}
+    else if (d.course) {state.course=d.course;save();render();}
+    else if (d.openChapter) {state.lesson[state.course]=d.openChapter;state.view='class';save();render();window.scrollTo(0,0);}
+    else if (d.mark) {const m=state.marks[d.mark]||{};const next=m.status===d.status?'':d.status;state.marks[d.mark]={...m,status:next,updated:Date.now(),due:shiftedDay(next==='good'?3:next==='fuzzy'?1:0)};save();render();}
+    else if (d.emphasis) {const m=state.marks[d.emphasis]||{};state.marks[d.emphasis]={...m,emphasis:!m.emphasis,updated:Date.now()};save();render();}
+    else if (d.review) openReview(d.review,d.fromDaily==='true');
+    else if (d.assess) assess(d.assess);
+    else if ('close' in d) {pendingImport=null;closeModal();}
+    else if (b.id==='settingsBtn'||b.id==='backToSettings') {pendingImport=null;settings();}
+    else if (b.id==='dropoutBtn') openDropout();
+    else if (b.id==='resumeDropout') {if(state.dropout?.finished)returnToClass();else openDropout();}
+    else if (d.reason) {state.dropout={course:state.course,lessonId:lesson().id,reason:d.reason,remaining:900,endsAt:null,finished:false};save();render();renderDropoutTask();}
+    else if (b.id==='timerToggle') toggleTimer();
+    else if (b.id==='finishFallback') returnToClass();
+    else if (b.id==='downloadTemplate') {const template=clone(STARTER);COURSE_IDS.forEach(id=>template[id].chapters.forEach(ch=>ch.points.forEach(p=>p.answer='')));download('classpilot-course-template.json',template);}
+    else if (b.id==='exportData') download(`classpilot-backup-${today()}.json`,{...state,format:'classpilot-backup',exportedAt:new Date().toISOString()});
+    else if (b.id==='confirmImport') confirmImport();
+    else if (b.id==='resetData') showModal('清空学习记录？','<p>这会清空所有标记、随记、回答、任务记录和考试日期，并恢复示例课程。可以先导出备份。</p><div class="stack"><button class="button ghost" id="exportData">先导出备份</button><button class="button alert" id="confirmReset">确认清空</button><button class="button secondary" data-close>取消</button></div>');
+    else if (b.id==='confirmReset') {clearInterval(timer);timer=null;state=newState();canPersist=true;storageMessage='';save();closeModal();render();showToast('已恢复示例课程。');}
+  });
+  document.addEventListener('change', async event => {
+    const t=event.target,d=t.dataset;
+    if (t.id==='lessonSelect') {state.lesson[state.course]=t.value;save();render();}
+    else if (t.id==='progressChapter') {state.progress[state.course]=Math.max(1,Math.min(learningChapters().length,Number(t.value)||1));state.progressEstimated[state.course]=false;state.lesson[state.course]=progressLesson().id;save();render();}
+    else if (t.id==='weeklyReviewDay') {state.reviewDays[state.course]=Math.max(0,Math.min(6,Number(t.value)||0));save();render();}
+    else if (d.examdate) {state.examDates[d.examdate]=dateValid(t.value)?t.value:'';save();render();}
+    else if (t.id==='dailyBudget') {state.budgets[dailyKey()]=Math.max(10,Math.min(120,Number(t.value)||30));save();render();}
+    else if (t.id==='yesterdayOverride') {if(t.value==='auto')delete state.yesterdayOverrides[dailyKey()];else state.yesterdayOverrides[dailyKey()]=t.value;save();render();}
+    else if (d.daily) {state.dailyDone[dailyKey()]??={};state.dailyDone[dailyKey()][d.daily]=t.checked;save();render();}
+    else if ('weekCheck' in d) {state.weeklyChecks[weeklyKey()]??={};state.weeklyChecks[weeklyKey()][d.weekCheck]=t.checked;save();render();}
+    else if ((t.id==='courseImport'||t.id==='backupImport') && t.files?.[0]) await prepareImport(t.files[0],t.id==='backupImport');
+  });
+  document.addEventListener('input', event => {const t=event.target;if(t.dataset.note){state.notes[t.dataset.note]=t.value;save();}else if(t.dataset.answer){state.answers[t.dataset.answer]=t.value;save();}});
+  document.addEventListener('keydown', event => {
+    const modal=document.querySelector('.modal');if(!modal)return;
+    if(event.key==='Escape'){pendingImport=null;closeModal();return;}
+    if(event.key==='Tab') {const nodes=[...modal.querySelectorAll('button:not(:disabled),input,textarea,select,summary,[tabindex="0"]')];const first=nodes[0],last=nodes[nodes.length-1];if(event.shiftKey && (document.activeElement===first||document.activeElement===modal)){event.preventDefault();last?.focus();}else if(!event.shiftKey && document.activeElement===last){event.preventDefault();first?.focus();}}
+  });
+  let renderedDate=today();
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)return;syncTimer();if(renderedDate!==today()){renderedDate=today();render();}});
+  render();resumeTimer();
+
+})();
+</script>
+</body>
+</html>
+
+
+
+
